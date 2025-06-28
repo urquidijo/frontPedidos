@@ -8,11 +8,11 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-// import { useNavigate } from "react-router-dom";
-// import API_URL from "../../config/config";
+import { useNavigate } from "react-router-dom";
+import API_URL from "../../config/config";
 
 const SignUp = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     username: "",
@@ -59,11 +59,19 @@ const SignUp = () => {
     try {
       console.log("Registrando usuario:", formData);
 
-      // const res = await fetch(`${API_URL}/auth/signup`, {...});
-      // const data = await res.json();
-      // navigate("/");
-
-      alert("¡Cuenta creada exitosamente!");
+      const res = await fetch(`${API_URL}/users`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          correo: formData.email,
+          usuario: formData.username,
+          password: formData.password,
+        }),
+      });
+      const data = await res.json();
+      navigate("/");
     } catch (err) {
       alert("Error al crear la cuenta");
       console.error(err);
@@ -98,7 +106,9 @@ const SignUp = () => {
               className="bg-transparent outline-none text-gray-900 flex-1"
             />
           </div>
-          {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+          {errors.email && (
+            <p className="text-red-500 text-sm">{errors.email}</p>
+          )}
         </div>
 
         {/* Usuario */}
@@ -116,7 +126,9 @@ const SignUp = () => {
               className="bg-transparent outline-none text-gray-900 flex-1"
             />
           </div>
-          {errors.username && <p className="text-red-500 text-sm">{errors.username}</p>}
+          {errors.username && (
+            <p className="text-red-500 text-sm">{errors.username}</p>
+          )}
         </div>
 
         {/* Contraseña */}
@@ -139,7 +151,9 @@ const SignUp = () => {
               className="text-gray-400 cursor-pointer ml-2"
             />
           </div>
-          {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+          {errors.password && (
+            <p className="text-red-500 text-sm">{errors.password}</p>
+          )}
         </div>
 
         <button

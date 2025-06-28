@@ -7,11 +7,11 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-// import { useNavigate } from "react-router-dom";
-// import API_URL from "../../config/config";
+import { useNavigate } from "react-router-dom";
+import API_URL from "../../config/config";
 
 const LogIn = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [isDisabled, setIsDisabled] = useState(true);
@@ -34,7 +34,9 @@ const LogIn = () => {
   const validateField = (name, value) => {
     let error = null;
     if (!value.trim()) {
-      error = `${name === "email" ? "El correo" : "La contraseña"} es requerido`;
+      error = `${
+        name === "email" ? "El correo" : "La contraseña"
+      } es requerido`;
     } else if (name === "email" && !/\S+@\S+\.\S+/.test(value)) {
       error = "Correo inválido";
     } else if (
@@ -46,22 +48,41 @@ const LogIn = () => {
     setErrors((prev) => ({ ...prev, [name]: error }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      // Simula backend
-      console.log("Iniciando sesión con:", formData);
-      alert("Inicio de sesión exitoso");
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const res = await fetch(`${API_URL}/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        correo: formData.email,
+        password: formData.password,
+      }),
+    });
 
-      // const res = await fetch(`${API_URL}/auth/login`, {...});
-      // const data = await res.json();
-      // sessionStorage.setItem("token", data.token);
-      // navigate("/dashboard");
-    } catch (err) {
-      alert("Error al iniciar sesión");
-      console.error(err);
+    const data = await res.json();
+
+    if (!res.ok) {
+      if (data.errors?.length) {
+        const newErrors = {};
+        data.errors.forEach((err) => {
+          newErrors[err.path] = err.msg;
+        });
+        setErrors((prev) => ({ ...prev, ...newErrors }));
+      } else {
+        alert("Error desconocido");
+      }
+      return;
     }
-  };
+
+    sessionStorage.setItem("token", data.token);
+    navigate("/Home");
+  } catch (err) {
+    alert("Error de conexión con el servidor");
+    console.error(err);
+  }
+};
+
 
   const handleResetPassword = async () => {
     if (!resetEmail.trim()) {
@@ -107,7 +128,9 @@ const LogIn = () => {
               className="bg-transparent outline-none text-gray-900 flex-1"
             />
           </div>
-          {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+          {errors.email && (
+            <p className="text-red-500 text-sm">{errors.email}</p>
+          )}
         </div>
 
         <div className="mb-4">
@@ -129,7 +152,9 @@ const LogIn = () => {
               className="text-gray-400 cursor-pointer ml-2"
             />
           </div>
-          {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+          {errors.password && (
+            <p className="text-red-500 text-sm">{errors.password}</p>
+          )}
         </div>
 
         <button

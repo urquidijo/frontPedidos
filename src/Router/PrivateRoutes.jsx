@@ -2,7 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 
 const PrivateRoutes = () => {
   const getToken = () => {
-    return sessionStorage.getItem("authToken");
+    return sessionStorage.getItem("token");
   };
   const token = getToken();
 
