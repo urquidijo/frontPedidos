@@ -1,3 +1,3 @@
-const IA_API = process.env.IA_API;
+const IA_API = import.meta.env.VITE_IA_API;
 
 export default IA_API;

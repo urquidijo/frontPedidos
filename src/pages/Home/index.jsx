@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   Search,
   MapPin,
@@ -10,15 +10,14 @@ import {
   Menu,
   X,
 } from "lucide-react";
-import IA_API from "../../config/IAconfing";
-import API_URL from "../../config/config";
-import React, { useState, useEffect } from "react";
+import IA_API from "../../config/IAconfing.js";
+import API_URL from "../../config/config.js";
 
 const Home = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [likedRestaurants, setLikedRestaurants] = useState(new Set());
   const [respuestas, setRespuestas] = useState([]);
-  const usuarioId = sessionStorage.getItem("usuarioId"); // o como tengas guardado el ID
+  const usuarioId = sessionStorage.getItem("usuario_id"); // o como tengas guardado el ID
 
   useEffect(() => {
     const fetchRespuestas = async () => {
@@ -26,8 +25,11 @@ const Home = () => {
         const res = await fetch(`${API_URL}/respuestas/${usuarioId}`);
         if (!res.ok) throw new Error("Error al obtener respuestas");
         const data = await res.json();
-        console.log("Respuestas obtenidas:", data);
-        setRespuestas(data); // ajusta si el JSON viene con .respuestas o directamente es array
+        const grupoData = await fetch(`${IA_API}/recomendar/${usuarioId}`);
+        if (!grupoData.ok) throw new Error("Error al obtener respuestas");
+        const grupoDataRes = await res.json();
+        console.log("Grupo de respuestas:", grupoDataRes);
+        
       } catch (error) {
         console.error("Error al obtener respuestas:", error);
       }
