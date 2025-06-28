@@ -1,9 +1,40 @@
-import React, { useState } from 'react';
-import { Search, MapPin, Clock, Star, Heart, ShoppingBag, User, Menu, X } from 'lucide-react';
+import React, { useState } from "react";
+import {
+  Search,
+  MapPin,
+  Clock,
+  Star,
+  Heart,
+  ShoppingBag,
+  User,
+  Menu,
+  X,
+} from "lucide-react";
+import IA_API from "../../config/IAconfing";
+import API_URL from "../../config/config";
+import React, { useState, useEffect } from "react";
 
 const Home = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [likedRestaurants, setLikedRestaurants] = useState(new Set());
+  const [respuestas, setRespuestas] = useState([]);
+  const usuarioId = sessionStorage.getItem("usuarioId"); // o como tengas guardado el ID
+
+  useEffect(() => {
+    const fetchRespuestas = async () => {
+      try {
+        const res = await fetch(`${API_URL}/respuestas/${usuarioId}`);
+        if (!res.ok) throw new Error("Error al obtener respuestas");
+        const data = await res.json();
+        console.log("Respuestas obtenidas:", data);
+        setRespuestas(data); // ajusta si el JSON viene con .respuestas o directamente es array
+      } catch (error) {
+        console.error("Error al obtener respuestas:", error);
+      }
+    };
+
+    if (usuarioId) fetchRespuestas();
+  }, [usuarioId]);
 
   const restaurants = [
     {
@@ -13,8 +44,9 @@ const Home = () => {
       rating: 4.8,
       deliveryTime: "25-35 min",
       deliveryFee: "Gratis",
-      image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&h=300&fit=crop",
-      description: "Auténtica comida italiana con ingredientes frescos"
+      image:
+        "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&h=300&fit=crop",
+      description: "Auténtica comida italiana con ingredientes frescos",
     },
     {
       id: 2,
@@ -23,8 +55,9 @@ const Home = () => {
       rating: 4.9,
       deliveryTime: "30-40 min",
       deliveryFee: "$2.99",
-      image: "https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400&h=300&fit=crop",
-      description: "El mejor sushi de la ciudad, preparado por chefs expertos"
+      image:
+        "https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400&h=300&fit=crop",
+      description: "El mejor sushi de la ciudad, preparado por chefs expertos",
     },
     {
       id: 3,
@@ -33,8 +66,9 @@ const Home = () => {
       rating: 4.6,
       deliveryTime: "20-30 min",
       deliveryFee: "Gratis",
-      image: "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&h=300&fit=crop",
-      description: "Hamburguesas gourmet con ingredientes premium"
+      image:
+        "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&h=300&fit=crop",
+      description: "Hamburguesas gourmet con ingredientes premium",
     },
     {
       id: 4,
@@ -43,8 +77,9 @@ const Home = () => {
       rating: 4.7,
       deliveryTime: "15-25 min",
       deliveryFee: "$1.99",
-      image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop",
-      description: "Auténticos tacos mexicanos con sabores tradicionales"
+      image:
+        "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop",
+      description: "Auténticos tacos mexicanos con sabores tradicionales",
     },
     {
       id: 5,
@@ -53,8 +88,9 @@ const Home = () => {
       rating: 4.5,
       deliveryTime: "20-30 min",
       deliveryFee: "Gratis",
-      image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop",
-      description: "Bowls nutritivos y deliciosos para una vida saludable"
+      image:
+        "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop",
+      description: "Bowls nutritivos y deliciosos para una vida saludable",
     },
     {
       id: 6,
@@ -63,9 +99,11 @@ const Home = () => {
       rating: 4.4,
       deliveryTime: "25-35 min",
       deliveryFee: "$2.50",
-      image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop",
-      description: "Pizzas artesanales con masa crujiente y ingredientes frescos"
-    }
+      image:
+        "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop",
+      description:
+        "Pizzas artesanales con masa crujiente y ingredientes frescos",
+    },
   ];
 
   const categories = [
@@ -74,7 +112,7 @@ const Home = () => {
     { name: "Burger", icon: "🍔", color: "bg-yellow-100 text-yellow-600" },
     { name: "Tacos", icon: "🌮", color: "bg-green-100 text-green-600" },
     { name: "Saludable", icon: "🥗", color: "bg-emerald-100 text-emerald-600" },
-    { name: "Postres", icon: "🍰", color: "bg-purple-100 text-purple-600" }
+    { name: "Postres", icon: "🍰", color: "bg-purple-100 text-purple-600" },
   ];
 
   const toggleLike = (restaurantId) => {
@@ -105,10 +143,30 @@ const Home = () => {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
-              <a href="#" className="text-gray-700 hover:text-orange-500 transition-colors">Inicio</a>
-              <a href="#" className="text-gray-700 hover:text-orange-500 transition-colors">Restaurantes</a>
-              <a href="#" className="text-gray-700 hover:text-orange-500 transition-colors">Ofertas</a>
-              <a href="#" className="text-gray-700 hover:text-orange-500 transition-colors">Mis Pedidos</a>
+              <a
+                href="#"
+                className="text-gray-700 hover:text-orange-500 transition-colors"
+              >
+                Inicio
+              </a>
+              <a
+                href="#"
+                className="text-gray-700 hover:text-orange-500 transition-colors"
+              >
+                Restaurantes
+              </a>
+              <a
+                href="#"
+                className="text-gray-700 hover:text-orange-500 transition-colors"
+              >
+                Ofertas
+              </a>
+              <a
+                href="#"
+                className="text-gray-700 hover:text-orange-500 transition-colors"
+              >
+                Mis Pedidos
+              </a>
             </nav>
 
             {/* User Actions */}
@@ -116,8 +174,15 @@ const Home = () => {
               <button className="p-2 text-gray-700 hover:text-orange-500 transition-colors">
                 <User className="h-6 w-6" />
               </button>
-              <button className="md:hidden p-2 text-gray-700" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-                {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              <button
+                className="md:hidden p-2 text-gray-700"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+              >
+                {isMenuOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
               </button>
             </div>
           </div>
@@ -127,10 +192,30 @@ const Home = () => {
         {isMenuOpen && (
           <div className="md:hidden bg-white border-t">
             <div className="px-4 py-2 space-y-2">
-              <a href="#" className="block py-2 text-gray-700 hover:text-orange-500">Inicio</a>
-              <a href="#" className="block py-2 text-gray-700 hover:text-orange-500">Restaurantes</a>
-              <a href="#" className="block py-2 text-gray-700 hover:text-orange-500">Ofertas</a>
-              <a href="#" className="block py-2 text-gray-700 hover:text-orange-500">Mis Pedidos</a>
+              <a
+                href="#"
+                className="block py-2 text-gray-700 hover:text-orange-500"
+              >
+                Inicio
+              </a>
+              <a
+                href="#"
+                className="block py-2 text-gray-700 hover:text-orange-500"
+              >
+                Restaurantes
+              </a>
+              <a
+                href="#"
+                className="block py-2 text-gray-700 hover:text-orange-500"
+              >
+                Ofertas
+              </a>
+              <a
+                href="#"
+                className="block py-2 text-gray-700 hover:text-orange-500"
+              >
+                Mis Pedidos
+              </a>
             </div>
           </div>
         )}
@@ -193,8 +278,12 @@ const Home = () => {
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold text-gray-900">Restaurantes recomendados para ti</h2>
-            <button className="text-orange-500 hover:text-orange-600 font-medium">Ver todos</button>
+            <h2 className="text-3xl font-bold text-gray-900">
+              Restaurantes recomendados para ti
+            </h2>
+            <button className="text-orange-500 hover:text-orange-600 font-medium">
+              Ver todos
+            </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -216,8 +305,8 @@ const Home = () => {
                     <Heart
                       className={`h-5 w-5 ${
                         likedRestaurants.has(restaurant.id)
-                          ? 'text-red-500 fill-current'
-                          : 'text-gray-400'
+                          ? "text-red-500 fill-current"
+                          : "text-gray-400"
                       }`}
                     />
                   </button>
@@ -230,14 +319,20 @@ const Home = () => {
 
                 <div className="p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-xl font-bold text-gray-900">{restaurant.name}</h3>
+                    <h3 className="text-xl font-bold text-gray-900">
+                      {restaurant.name}
+                    </h3>
                     <div className="flex items-center space-x-1">
                       <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                      <span className="text-sm font-medium text-gray-700">{restaurant.rating}</span>
+                      <span className="text-sm font-medium text-gray-700">
+                        {restaurant.rating}
+                      </span>
                     </div>
                   </div>
 
-                  <p className="text-gray-600 text-sm mb-3">{restaurant.description}</p>
+                  <p className="text-gray-600 text-sm mb-3">
+                    {restaurant.description}
+                  </p>
 
                   <div className="flex items-center justify-between text-sm text-gray-500">
                     <div className="flex items-center space-x-1">
@@ -245,7 +340,9 @@ const Home = () => {
                       <span>{restaurant.deliveryTime}</span>
                     </div>
                     <div className="font-medium">
-                      {restaurant.deliveryFee === "Gratis" ? "Envío gratis" : `Envío ${restaurant.deliveryFee}`}
+                      {restaurant.deliveryFee === "Gratis"
+                        ? "Envío gratis"
+                        : `Envío ${restaurant.deliveryFee}`}
                     </div>
                   </div>
 
@@ -264,7 +361,9 @@ const Home = () => {
       {/* Promotional Banner */}
       <section className="py-12 bg-gradient-to-r from-purple-600 to-indigo-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">¡Descarga nuestra app!</h2>
+          <h2 className="text-3xl font-bold text-white mb-4">
+            ¡Descarga nuestra app!
+          </h2>
           <p className="text-xl text-purple-100 mb-8">
             Obtén descuentos exclusivos y delivery más rápido
           </p>
@@ -291,37 +390,86 @@ const Home = () => {
                 <span className="text-2xl font-bold">QuickEats</span>
               </div>
               <p className="text-gray-400">
-                La mejor plataforma de delivery para disfrutar tu comida favorita en casa.
+                La mejor plataforma de delivery para disfrutar tu comida
+                favorita en casa.
               </p>
             </div>
 
             <div>
               <h3 className="text-lg font-semibold mb-4">Empresa</h3>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">Acerca de</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Carreras</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Prensa</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Acerca de
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Carreras
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Prensa
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Blog
+                  </a>
+                </li>
               </ul>
             </div>
 
             <div>
               <h3 className="text-lg font-semibold mb-4">Soporte</h3>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">Centro de ayuda</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Contacto</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Términos</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Privacidad</a></li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Centro de ayuda
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Contacto
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Términos
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Privacidad
+                  </a>
+                </li>
               </ul>
             </div>
 
             <div>
               <h3 className="text-lg font-semibold mb-4">Para Restaurantes</h3>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">Únete como socio</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Portal de restaurantes</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Marketing</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Recursos</a></li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Únete como socio
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Portal de restaurantes
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Marketing
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Recursos
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
