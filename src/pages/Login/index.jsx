@@ -61,6 +61,7 @@ const LogIn = () => {
     });
 
     const data = await res.json();
+    sessionStorage.setItem("usuario_id", data.usuario?.id);
 
     if (!res.ok) {
       if (data.errors?.length) {
@@ -76,7 +77,27 @@ const LogIn = () => {
     }
 
     sessionStorage.setItem("token", data.token);
-    navigate("/Home");
+    const usuario_id = data.usuario?.id;
+    if (!usuario_id) {
+      navigate("/Home");
+      return;
+    }
+    let respuestas = null;
+    try {
+      const resp = await fetch(`${API_URL}/respuestas/${usuario_id}`);
+      if (resp.status === 200) {
+        navigate("/Home");
+        return;
+      } else if (resp.status === 404) {
+        navigate(`/modalRespuestas?usuario_id=${usuario_id}`);
+        return;
+      } else {
+        throw new Error("Error inesperado al consultar preferencias");
+      }
+    } catch (err) {
+      alert("Error al consultar preferencias");
+      return;
+    }
   } catch (err) {
     alert("Error de conexión con el servidor");
     console.error(err);

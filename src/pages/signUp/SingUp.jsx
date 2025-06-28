@@ -57,8 +57,6 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log("Registrando usuario:", formData);
-
       const res = await fetch(`${API_URL}/users`, {
         method: "POST",
         headers: {
@@ -71,6 +69,7 @@ const SignUp = () => {
         }),
       });
       const data = await res.json();
+      // Después de crear el usuario, solo navega al login
       navigate("/");
     } catch (err) {
       alert("Error al crear la cuenta");

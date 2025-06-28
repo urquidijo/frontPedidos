@@ -7,6 +7,7 @@ import Proveedores from "../pages/Proveedores/Proveedores.jsx";
 import ChangePassword from "../pages/Login/ChangePassword.jsx";
 import FormularioQuejas from "../pages/Sugerencias/FormularioQuejas.jsx";
 import SignUp from "../pages/signUp/SingUp.jsx";
+import ModalRespuestas from "../pages/ModalRespuestas/ModalRespuestas";
 
 const Router = () => {
   return (
@@ -22,6 +23,7 @@ const Router = () => {
           <Route path="/usuarios" element={<Usuarios />} />
           <Route path="/proveedores" element={<Proveedores />} />
       </Route>
+      <Route path="/modalRespuestas" element={<ModalRespuestas />} />
     </Routes>
   );
 };
