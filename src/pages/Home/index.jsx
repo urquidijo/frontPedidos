@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import IA_API from "../../config/IAconfing.js";
 import API_URL from "../../config/config.js";
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -148,30 +149,10 @@ const Home = () => {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
-              <a
-                href="#"
-                className="text-gray-700 hover:text-orange-500 transition-colors"
-              >
-                Inicio
-              </a>
-              <a
-                href="#"
-                className="text-gray-700 hover:text-orange-500 transition-colors"
-              >
-                Restaurantes
-              </a>
-              <a
-                href="#"
-                className="text-gray-700 hover:text-orange-500 transition-colors"
-              >
-                Ofertas
-              </a>
-              <a
-                href="#"
-                className="text-gray-700 hover:text-orange-500 transition-colors"
-              >
-                Mis Pedidos
-              </a>
+              <Link to="/Home" className="text-gray-700 hover:text-orange-500 transition-colors">Inicio</Link>
+              <Link to="/restaurantes" className="text-gray-700 hover:text-orange-500 transition-colors">Restaurantes</Link>
+              <a href="#" className="text-gray-700 hover:text-orange-500 transition-colors">Ofertas</a>
+              <a href="#" className="text-gray-700 hover:text-orange-500 transition-colors">Mis Pedidos</a>
             </nav>
 
             {/* User Actions */}
@@ -197,6 +178,10 @@ const Home = () => {
         {isMenuOpen && (
           <div className="md:hidden bg-white border-t">
             <div className="px-4 py-2 space-y-2">
+              <Link to="/Home" className="block py-2 text-gray-700 hover:text-orange-500">Inicio</Link>
+              <Link to="/restaurantes" className="block py-2 text-gray-700 hover:text-orange-500">Restaurantes</Link>
+              <a href="#" className="block py-2 text-gray-700 hover:text-orange-500">Ofertas</a>
+              <a href="#" className="block py-2 text-gray-700 hover:text-orange-500">Mis Pedidos</a>
               <a
                 href="#"
                 className="block py-2 text-gray-700 hover:text-orange-500"
