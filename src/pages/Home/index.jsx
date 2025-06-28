@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Search, MapPin, Clock, Star, Heart, ShoppingBag, User, Menu, X } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -105,8 +106,8 @@ const Home = () => {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
-              <a href="#" className="text-gray-700 hover:text-orange-500 transition-colors">Inicio</a>
-              <a href="#" className="text-gray-700 hover:text-orange-500 transition-colors">Restaurantes</a>
+              <Link to="/Home" className="text-gray-700 hover:text-orange-500 transition-colors">Inicio</Link>
+              <Link to="/restaurantes" className="text-gray-700 hover:text-orange-500 transition-colors">Restaurantes</Link>
               <a href="#" className="text-gray-700 hover:text-orange-500 transition-colors">Ofertas</a>
               <a href="#" className="text-gray-700 hover:text-orange-500 transition-colors">Mis Pedidos</a>
             </nav>
@@ -127,8 +128,8 @@ const Home = () => {
         {isMenuOpen && (
           <div className="md:hidden bg-white border-t">
             <div className="px-4 py-2 space-y-2">
-              <a href="#" className="block py-2 text-gray-700 hover:text-orange-500">Inicio</a>
-              <a href="#" className="block py-2 text-gray-700 hover:text-orange-500">Restaurantes</a>
+              <Link to="/Home" className="block py-2 text-gray-700 hover:text-orange-500">Inicio</Link>
+              <Link to="/restaurantes" className="block py-2 text-gray-700 hover:text-orange-500">Restaurantes</Link>
               <a href="#" className="block py-2 text-gray-700 hover:text-orange-500">Ofertas</a>
               <a href="#" className="block py-2 text-gray-700 hover:text-orange-500">Mis Pedidos</a>
             </div>
