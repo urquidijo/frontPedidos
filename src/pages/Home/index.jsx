@@ -25,7 +25,7 @@ const Home = () => {
         const res = await fetch(`${API_URL}/respuestas/${usuarioId}`);
         if (!res.ok) throw new Error("Error al obtener respuestas");
         const data = await res.json();
-        const grupoData = await fetch(`${IA_API}/recomendar/${usuarioId}`);
+        const grupoData = await fetch(`${IA_API}`);
         if (!grupoData.ok) throw new Error("Error al obtener respuestas");
         const grupoDataRes = await res.json();
         console.log("Grupo de respuestas:", grupoDataRes);
