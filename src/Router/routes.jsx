@@ -9,6 +9,7 @@ import FormularioQuejas from "../pages/Sugerencias/FormularioQuejas.jsx";
 import SignUp from "../pages/signUp/SingUp.jsx";
 import ModalRespuestas from "../pages/ModalRespuestas/ModalRespuestas";
 import Restaurante from "../pages/Restaurantes/Restaurante.jsx";
+import OfertasComida from "../pages/OfertasComida/OfertasComida.jsx";
 
 const Router = () => {
   return (
@@ -24,6 +25,7 @@ const Router = () => {
           <Route path="/usuarios" element={<Usuarios />} />
           <Route path="/proveedores" element={<Proveedores />} />
           <Route path="/restaurantes" element={<Restaurante />} />
+          <Route path="/ofertas-comida" element={<OfertasComida />} />
       </Route>
       <Route path="/modalRespuestas" element={<ModalRespuestas />} />
     </Routes>

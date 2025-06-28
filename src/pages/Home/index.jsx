@@ -151,7 +151,7 @@ const Home = () => {
             <nav className="hidden md:flex items-center space-x-8">
               <Link to="/Home" className="text-gray-700 hover:text-orange-500 transition-colors">Inicio</Link>
               <Link to="/restaurantes" className="text-gray-700 hover:text-orange-500 transition-colors">Restaurantes</Link>
-              <a href="#" className="text-gray-700 hover:text-orange-500 transition-colors">Ofertas</a>
+              <Link to="/ofertas-comida" className="text-gray-700 hover:text-orange-500 transition-colors">Ofertas</Link>
               <a href="#" className="text-gray-700 hover:text-orange-500 transition-colors">Mis Pedidos</a>
             </nav>
 
@@ -180,7 +180,7 @@ const Home = () => {
             <div className="px-4 py-2 space-y-2">
               <Link to="/Home" className="block py-2 text-gray-700 hover:text-orange-500">Inicio</Link>
               <Link to="/restaurantes" className="block py-2 text-gray-700 hover:text-orange-500">Restaurantes</Link>
-              <a href="#" className="block py-2 text-gray-700 hover:text-orange-500">Ofertas</a>
+              <Link to="/ofertas-comida" className="block py-2 text-gray-700 hover:text-orange-500">Ofertas</Link>
               <a href="#" className="block py-2 text-gray-700 hover:text-orange-500">Mis Pedidos</a>
               <a
                 href="#"

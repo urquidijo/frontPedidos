@@ -113,8 +113,8 @@ const RestaurantsPage = () => {
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
               <Link to="/Home" className="text-gray-700 hover:text-orange-500 transition-colors">Inicio</Link>
-              <a href="#" className="text-orange-500 font-medium border-b-2 border-orange-500">Restaurantes</a>
-              <a href="#" className="text-gray-700 hover:text-orange-500 transition-colors">Ofertas</a>
+              <Link to="/restaurantes" className="text-orange-500 font-medium border-b-2 border-orange-500">Restaurantes</Link>
+              <Link to="/ofertas-comida" className="text-gray-700 hover:text-orange-500 transition-colors">Ofertas</Link>
               <a href="#" className="text-gray-700 hover:text-orange-500 transition-colors">Mis Pedidos</a>
             </nav>
             {/* User Actions */}
@@ -133,8 +133,8 @@ const RestaurantsPage = () => {
           <div className="md:hidden bg-white border-t">
             <div className="px-4 py-2 space-y-2">
               <Link to="/Home" className="block py-2 text-gray-700 hover:text-orange-500">Inicio</Link>
-              <a href="#" className="block py-2 text-orange-500 font-medium">Restaurantes</a>
-              <a href="#" className="block py-2 text-gray-700 hover:text-orange-500">Ofertas</a>
+              <Link to="/restaurantes" className="block py-2 text-orange-500 font-medium">Restaurantes</Link>
+              <Link to="/ofertas-comida" className="block py-2 text-gray-700 hover:text-orange-500">Ofertas</Link>
               <a href="#" className="block py-2 text-gray-700 hover:text-orange-500">Mis Pedidos</a>
             </div>
           </div>
