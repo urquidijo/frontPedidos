@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Search,
   MapPin,
@@ -25,11 +25,14 @@ const Home = () => {
         const res = await fetch(`${API_URL}/respuestas/${usuarioId}`);
         if (!res.ok) throw new Error("Error al obtener respuestas");
         const data = await res.json();
-        const grupoData = await fetch(`${IA_API}/recomendar/${usuarioId}`);
-        if (!grupoData.ok) throw new Error("Error al obtener respuestas");
-        const grupoDataRes = await res.json();
-        console.log("Grupo de respuestas:", grupoDataRes);
-        
+        const response = await fetch(`${API_URL}/clasificar-grupo`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data), // objeto con los puntajes
+        });
+        if (!response.ok) throw new Error("Error al obtener respuestas");
+        const dataGroup = await response.json();
+        console.log("Grupo de respuestas:", dataGroup);
       } catch (error) {
         console.error("Error al obtener respuestas:", error);
       }
