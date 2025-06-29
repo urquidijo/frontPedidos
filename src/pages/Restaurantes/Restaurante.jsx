@@ -235,13 +235,13 @@ const RestaurantsPage = () => {
                 to="/restaurantes"
                 className="block py-3 text-orange-500 font-medium bg-orange-50 rounded-lg px-3"
               >
-                Restaurantes
+                Comidas
               </Link>
               <Link
                 to="/ofertas-comida"
                 className="block py-3 text-gray-700 hover:text-orange-500 rounded-lg hover:bg-orange-50 px-3 transition-all duration-200"
               >
-                Ofertas
+                Productos
               </Link>
               <Link
                 to="/carrito"

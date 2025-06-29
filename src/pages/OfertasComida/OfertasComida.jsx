@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  ShoppingBag,
-  User,
-  Menu,
-  X,
-  CheckCircle,
-} from "lucide-react";
+import { ShoppingBag, User, Menu, X, CheckCircle } from "lucide-react";
 import API_URL from "../../config/config";
 import { Link } from "react-router-dom";
 
@@ -27,8 +21,8 @@ const ProductosPage = () => {
 
   useEffect(() => {
     fetch(`${API_URL}/productos`)
-      .then(res => res.ok ? res.json() : [])
-      .then(data => setProductos(data))
+      .then((res) => (res.ok ? res.json() : []))
+      .then((data) => setProductos(data))
       .finally(() => setLoading(false));
   }, []);
 
@@ -80,17 +74,18 @@ const ProductosPage = () => {
                 Inicio
               </Link>
               <Link
-                to="/productos"
+                to="/restaurantes"
+               className="text-gray-700 hover:text-orange-500 font-semibold transition-colors relative"
+              >
+                Comidas
+              </Link>
+              <Link
+                to="/ofertas-comida"
                 className="text-orange-500 font-medium relative after:content-[''] after:absolute after:bottom-[-8px] after:left-0 after:w-full after:h-0.5 after:bg-gradient-to-r after:from-orange-500 after:to-red-500 after:rounded-full"
               >
                 Productos
               </Link>
-              <Link
-                to="/ofertas-comida"
-                className="text-gray-700 hover:text-orange-500 font-semibold transition-colors"
-              >
-                Ofertas
-              </Link>
+
               <Link
                 to="/carrito"
                 className="text-gray-700 hover:text-orange-500 font-semibold transition-colors relative"
@@ -106,7 +101,10 @@ const ProductosPage = () => {
             </nav>
             {/* User Actions */}
             <div className="flex items-center space-x-2">
-              <button className="group p-2 rounded-full hover:bg-orange-100 transition relative" title="Perfil">
+              <button
+                className="group p-2 rounded-full hover:bg-orange-100 transition relative"
+                title="Perfil"
+              >
                 <User className="h-6 w-6 text-orange-500 group-hover:scale-110 transition-transform" />
               </button>
               <button
@@ -114,7 +112,11 @@ const ProductosPage = () => {
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
               >
-                {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                {isMenuOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
               </button>
             </div>
           </div>
@@ -123,10 +125,30 @@ const ProductosPage = () => {
         {isMenuOpen && (
           <div className="md:hidden bg-white border-t">
             <div className="px-4 py-2 space-y-2">
-              <Link to="/Home" className="block py-2 text-gray-700 hover:text-orange-500 font-semibold">Inicio</Link>
-              <Link to="/productos" className="block py-2 text-orange-500 font-semibold bg-orange-50">Productos</Link>
-              <Link to="/ofertas-comida" className="block py-2 text-gray-700 hover:text-orange-500 font-semibold">Ofertas</Link>
-              <Link to="/carrito" className="block py-2 text-gray-700 hover:text-orange-500 font-semibold">Carrito</Link>
+              <Link
+                to="/Home"
+               className="block py-3 text-gray-700 hover:text-orange-500 rounded-lg hover:bg-orange-50 px-3 transition-all duration-200"
+              >
+                Inicio
+              </Link>
+              <Link
+                to="/restaurantes"
+               className="block py-3 text-gray-700 hover:text-orange-500 rounded-lg hover:bg-orange-50 px-3 transition-all duration-200"
+              >
+                Comidas
+              </Link>
+              <Link
+                to="/ofertas-comida"
+                className="block py-3 text-orange-500 font-medium bg-orange-50 rounded-lg px-3"
+              >
+                Productos
+              </Link>
+              <Link
+                to="/carrito"
+                className="block py-3 text-gray-700 hover:text-orange-500 rounded-lg hover:bg-orange-50 px-3 transition-all duration-200"
+              >
+                Carrito
+              </Link>
             </div>
           </div>
         )}
@@ -142,7 +164,9 @@ const ProductosPage = () => {
         ) : productos.length === 0 ? (
           <div className="text-center py-20 text-gray-400">
             <ShoppingBag className="mx-auto h-16 w-16 mb-4 opacity-40" />
-            <p className="text-xl font-bold">¡No hay productos en este momento!</p>
+            <p className="text-xl font-bold">
+              ¡No hay productos en este momento!
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
@@ -170,8 +194,12 @@ const ProductosPage = () => {
                     <ShoppingBag className="w-5 h-5" />
                   </button>
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">{producto.nombre}</h3>
-                <p className="text-gray-600 text-sm flex-1">{producto.descripcion}</p>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">
+                  {producto.nombre}
+                </h3>
+                <p className="text-gray-600 text-sm flex-1">
+                  {producto.descripcion}
+                </p>
                 <button
                   onClick={() => addToCart(producto)}
                   className="mt-4 flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white font-semibold py-2 rounded-lg transition"
@@ -197,7 +225,8 @@ const ProductosPage = () => {
                 <span className="text-2xl font-bold">Supermercado</span>
               </div>
               <p className="text-gray-300 leading-relaxed">
-                La mejor plataforma de supermercado online para productos frescos y perecederos.
+                La mejor plataforma de supermercado online para productos
+                frescos y perecederos.
               </p>
             </div>
             {/* ...más secciones del footer igual que tu código... */}
