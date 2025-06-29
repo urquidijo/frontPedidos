@@ -9,6 +9,7 @@ import {
   User,
   Menu,
   X,
+  LogOut,
 } from "lucide-react";
 import IA_API from "../../config/IAconfing.js";
 import API_URL from "../../config/config.js";
@@ -120,6 +121,11 @@ const Home = () => {
     { name: "Saludable", icon: "🥗", color: "bg-emerald-100 text-emerald-600" },
     { name: "Postres", icon: "🍰", color: "bg-purple-100 text-purple-600" },
   ];
+  const handleLogout = () => {
+    sessionStorage.clear(); // Elimina todo del sessionStorage
+    window.location.href = "/"; // O usa navigate("/login") si prefieres react-router
+  };
+
 
   const toggleLike = (restaurantId) => {
     const newLiked = new Set(likedRestaurants);
@@ -157,18 +163,24 @@ const Home = () => {
 
             {/* User Actions */}
             <div className="flex items-center space-x-4">
-              <button className="p-2 text-gray-700 hover:text-orange-500 transition-colors">
+              <button
+                className="p-2 text-gray-700 hover:text-orange-500 transition-colors"
+                title="Perfil"
+              >
                 <User className="h-6 w-6" />
+              </button>
+              <button
+                className="p-2 text-gray-700 hover:text-orange-500 transition-colors"
+                onClick={handleLogout}
+                title="Cerrar sesión"
+              >
+                <LogOut className="h-6 w-6" />
               </button>
               <button
                 className="md:hidden p-2 text-gray-700"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
               >
-                {isMenuOpen ? (
-                  <X className="h-6 w-6" />
-                ) : (
-                  <Menu className="h-6 w-6" />
-                )}
+                {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </button>
             </div>
           </div>
@@ -293,11 +305,10 @@ const Home = () => {
                     className="absolute top-3 right-3 p-2 bg-white rounded-full shadow-md hover:scale-110 transition-transform"
                   >
                     <Heart
-                      className={`h-5 w-5 ${
-                        likedRestaurants.has(restaurant.id)
-                          ? "text-red-500 fill-current"
-                          : "text-gray-400"
-                      }`}
+                      className={`h-5 w-5 ${likedRestaurants.has(restaurant.id)
+                        ? "text-red-500 fill-current"
+                        : "text-gray-400"
+                        }`}
                     />
                   </button>
                   {restaurant.deliveryFee === "Gratis" && (
