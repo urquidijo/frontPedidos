@@ -492,6 +492,24 @@ const RestaurantsPage = () => {
                         )}
                     </div>
 
+                    {/* BLOQUE DE PRECIOS */}
+                    {restaurant.precio_descuento ? (
+                      <div className="mb-3 flex items-end gap-3">
+                        <span className="text-base md:text-lg font-semibold text-gray-400 line-through decoration-red-500 decoration-2">
+                          Bs. {restaurant.precio}
+                        </span>
+                        <span className="text-2xl md:text-3xl font-extrabold text-orange-600">
+                          Bs. {restaurant.precio_descuento}
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="mb-3">
+                        <span className="text-2xl md:text-3xl font-extrabold text-gray-700">
+                          Bs. {restaurant.precio}
+                        </span>
+                      </div>
+                    )}
+
                     <div className="flex items-center justify-between pt-3 border-t border-gray-100">
                       <div className="flex items-center space-x-3">
                         <span className="text-sm font-semibold text-gray-700">

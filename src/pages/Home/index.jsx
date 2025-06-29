@@ -258,6 +258,25 @@ const Home = () => {
                       </div>
                     </div>
                     <p className="text-gray-600 text-base mb-4">{restaurant.descripcion || restaurant.description}</p>
+                    
+                    {/* BLOQUE DE PRECIOS */}
+                    {restaurant.precio_descuento ? (
+                      <div className="mb-2 flex items-end gap-3">
+                        <span className="text-base md:text-lg font-semibold text-gray-400 line-through decoration-red-500 decoration-2">
+                          Bs. {restaurant.precio}
+                        </span>
+                        <span className="text-2xl md:text-3xl font-extrabold text-orange-600">
+                          Bs. {restaurant.precio_descuento}
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="mb-2">
+                        <span className="text-2xl md:text-3xl font-extrabold text-gray-700">
+                          Bs. {restaurant.precio}
+                        </span>
+                      </div>
+                    )}
+
                     <div className="flex items-center justify-between text-sm text-gray-500 mb-2">
                       <div className="flex items-center space-x-1">
                         <Clock className="h-4 w-4" />
@@ -347,4 +366,4 @@ const Home = () => {
 };
 
 export default Home;
-
+  

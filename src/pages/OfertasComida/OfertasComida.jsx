@@ -200,6 +200,25 @@ const ProductosPage = () => {
                 <p className="text-gray-600 text-sm flex-1">
                   {producto.descripcion}
                 </p>
+
+                {/* BLOQUE DE PRECIOS */}
+                {producto.precio_descuento ? (
+                  <div className="mb-2 flex items-end gap-3">
+                    <span className="text-base md:text-lg font-semibold text-gray-400 line-through decoration-red-500 decoration-2">
+                      Bs. {producto.precio}
+                    </span>
+                    <span className="text-2xl md:text-3xl font-extrabold text-orange-600">
+                      Bs. {producto.precio_descuento}
+                    </span>
+                  </div>
+                ) : (
+                  <div className="mb-2">
+                    <span className="text-2xl md:text-3xl font-extrabold text-gray-700">
+                      Bs. {producto.precio}
+                    </span>
+                  </div>
+                )}
+
                 <button
                   onClick={() => addToCart(producto)}
                   className="mt-4 flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white font-semibold py-2 rounded-lg transition"
