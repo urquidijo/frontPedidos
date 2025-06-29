@@ -129,7 +129,7 @@ const LogIn = () => {
         className="bg-white/90 backdrop-blur-md p-8 rounded-2xl w-full max-w-md text-gray-900 shadow-2xl"
       >
         <h2 className="text-4xl font-extrabold text-center text-red-600 mb-3 tracking-tight">
-          DeliveryFast
+          QuickEats
         </h2>
         <p className="text-center text-gray-600 mb-6 text-sm">
           Inicia sesión para gestionar tus pedidos
