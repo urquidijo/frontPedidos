@@ -8,6 +8,7 @@ import SignUp from "../pages/signUp/SingUp.jsx";
 import ModalRespuestas from "../pages/ModalRespuestas/ModalRespuestas";
 import Restaurante from "../pages/Restaurantes/Restaurante.jsx";
 import OfertasComida from "../pages/OfertasComida/OfertasComida.jsx";
+import Carrito from "../pages/Carrito/Carrito.jsx";
 
 const Router = () => {
   return (
@@ -21,6 +22,7 @@ const Router = () => {
           <Route path="/usuarios" element={<Usuarios />} />
           <Route path="/restaurantes" element={<Restaurante />} />
           <Route path="/ofertas-comida" element={<OfertasComida />} />
+          <Route path="/carrito" element={<Carrito />} />
       </Route>
       <Route path="/modalRespuestas" element={<ModalRespuestas />} />
     </Routes>

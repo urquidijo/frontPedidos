@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   Search,
   MapPin,
-  Clock,
   Star,
   Heart,
   ShoppingBag,
@@ -13,6 +12,7 @@ import {
   ChevronDown,
   SlidersHorizontal,
   Phone,
+  CheckCircle,
 } from "lucide-react";
 import API_URL from "../../config/config";
 import { Link } from "react-router-dom";
@@ -28,7 +28,29 @@ const RestaurantsPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Categorías de tu base de datos
+  // ------ Carrito ------
+  const [cart, setCart] = useState(() => {
+    const stored = sessionStorage.getItem("cart");
+    return stored ? JSON.parse(stored) : [];
+  });
+  const [toast, setToast] = useState(null);
+
+  useEffect(() => {
+    sessionStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
+
+  const addToCart = (restaurant) => {
+    if (!cart.includes(restaurant.id)) {
+      setCart([...cart, restaurant.id]);
+      setToast(`${restaurant.nombre || restaurant.name || "Restaurante"} agregado al carrito`);
+      setTimeout(() => setToast(null), 1800);
+    } else {
+      setToast(`Ya está en el carrito`);
+      setTimeout(() => setToast(null), 1200);
+    }
+  };
+
+  // ------------ Categorías y zonas -------------
   const categories = [
     "Todos",
     "Carnes",
@@ -44,7 +66,6 @@ const RestaurantsPage = () => {
     "Sushi",
   ];
 
-  // Zonas extraídas de tus datos
   const zones = [
     "Todas",
     "Centro",
@@ -63,7 +84,7 @@ const RestaurantsPage = () => {
     "Precio: mayor a menor",
   ];
 
-  // FETCH de restaurantes filtrando por categoría (y zona, si quieres hacerlo del lado backend)
+  // ------------- FETCH de restaurantes ----------------
   useEffect(() => {
     const fetchRestaurantes = async () => {
       setLoading(true);
@@ -74,10 +95,6 @@ const RestaurantsPage = () => {
         if (selectedCategory && selectedCategory !== "Todos") {
           params.push(`categoria=${encodeURIComponent(selectedCategory)}`);
         }
-        // Si más adelante quieres zona por backend, descomenta:
-        // if (selectedZone && selectedZone !== "Todas") {
-        //   params.push(`zona=${encodeURIComponent(selectedZone)}`);
-        // }
         if (params.length > 0) {
           url += `?${params.join("&")}`;
         }
@@ -85,7 +102,6 @@ const RestaurantsPage = () => {
         if (!res.ok) throw new Error("Error al obtener restaurantes");
         const data = await res.json();
         setRestaurants(data);
-        console.log("Restaurantes obtenidos:", data);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -93,9 +109,9 @@ const RestaurantsPage = () => {
       }
     };
     fetchRestaurantes();
-  }, [selectedCategory]); // Si filtras también por zona en backend, pon [selectedCategory, selectedZone]
+  }, [selectedCategory]);
 
-  // Solo filtramos por zona en frontend, porque categoría ya la filtra el backend
+  // --- Solo filtra zona en frontend
   const filteredRestaurants = restaurants.filter((restaurant) => {
     if (selectedZone !== "Todas" && restaurant.zona_nombre !== selectedZone) {
       return false;
@@ -103,6 +119,7 @@ const RestaurantsPage = () => {
     return true;
   });
 
+  // --- Like
   const toggleLike = (restaurantId) => {
     const newLiked = new Set(likedRestaurants);
     if (newLiked.has(restaurantId)) {
@@ -132,6 +149,14 @@ const RestaurantsPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* Toast de carrito */}
+      {toast && (
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 bg-green-500 text-white flex items-center gap-2 px-6 py-3 rounded-full shadow-lg z-50 text-lg animate-bounce-in">
+          <CheckCircle className="w-6 h-6" />
+          <span>{toast}</span>
+        </div>
+      )}
+
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -157,20 +182,26 @@ const RestaurantsPage = () => {
                 to="/restaurantes"
                 className="text-orange-500 font-medium relative after:content-[''] after:absolute after:bottom-[-8px] after:left-0 after:w-full after:h-0.5 after:bg-gradient-to-r after:from-orange-500 after:to-red-500 after:rounded-full"
               >
-                Restaurantes
+                Comidas
               </Link>
               <Link
                 to="/ofertas-comida"
                 className="text-gray-700 hover:text-orange-500 transition-all duration-200 hover:scale-105"
               >
-                Ofertas
+                Productos
               </Link>
-              <a
-                href="#"
-                className="text-gray-700 hover:text-orange-500 transition-all duration-200 hover:scale-105"
+              <Link
+                to="/carrito"
+                className="text-gray-700 hover:text-orange-500 transition-all duration-200 hover:scale-105 relative"
               >
-                Mis Pedidos
-              </a>
+                <ShoppingBag className="h-6 w-6 inline-block text-orange-500" />
+                {cart.length > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                    {cart.length}
+                  </span>
+                )}
+                <span className="ml-2">Mis Pedidos</span>
+              </Link>
             </nav>
             {/* User Actions */}
             <div className="flex items-center space-x-4">
@@ -212,12 +243,12 @@ const RestaurantsPage = () => {
               >
                 Ofertas
               </Link>
-              <a
-                href="#"
+              <Link
+                to="/carrito"
                 className="block py-3 text-gray-700 hover:text-orange-500 rounded-lg hover:bg-orange-50 px-3 transition-all duration-200"
               >
                 Mis Pedidos
-              </a>
+              </Link>
             </div>
           </div>
         )}
@@ -327,50 +358,7 @@ const RestaurantsPage = () => {
           {isFilterOpen && (
             <div className="mt-6 p-6 bg-white rounded-2xl shadow-lg border border-gray-100">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-3">
-                    Calificación
-                  </label>
-                  <select className="w-full border border-gray-200 rounded-xl px-4 py-3 outline-none hover:shadow-md transition-all duration-200">
-                    <option value="">Cualquiera</option>
-                    <option value="4.5">4.5+ estrellas</option>
-                    <option value="4.0">4.0+ estrellas</option>
-                    <option value="3.5">3.5+ estrellas</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-3">
-                    Tiempo de entrega
-                  </label>
-                  <select className="w-full border border-gray-200 rounded-xl px-4 py-3 outline-none hover:shadow-md transition-all duration-200">
-                    <option value="">Cualquiera</option>
-                    <option value="30">Menos de 30 min</option>
-                    <option value="45">Menos de 45 min</option>
-                    <option value="60">Menos de 1 hora</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-3">
-                    Costo de envío
-                  </label>
-                  <select className="w-full border border-gray-200 rounded-xl px-4 py-3 outline-none hover:shadow-md transition-all duration-200">
-                    <option value="">Cualquiera</option>
-                    <option value="free">Envío gratis</option>
-                    <option value="low">Menos de $2</option>
-                    <option value="medium">Menos de $5</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-3">
-                    Rango de precio
-                  </label>
-                  <select className="w-full border border-gray-200 rounded-xl px-4 py-3 outline-none hover:shadow-md transition-all duration-200">
-                    <option value="">Cualquiera</option>
-                    <option value="$">$ - Económico</option>
-                    <option value="$$">$$ - Moderado</option>
-                    <option value="$$$">$$$ - Premium</option>
-                  </select>
-                </div>
+                {/* Aquí tus filtros adicionales */}
               </div>
             </div>
           )}
@@ -425,7 +413,17 @@ const RestaurantsPage = () => {
                         }`}
                       />
                     </button>
-
+                    {/* BOTÓN AGREGAR AL CARRITO */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        addToCart(restaurant);
+                      }}
+                      className="absolute bottom-4 right-4 p-2 bg-orange-500 text-white rounded-full shadow-md hover:bg-orange-600 transition"
+                      title="Agregar al carrito"
+                    >
+                      <ShoppingBag className="w-5 h-5" />
+                    </button>
                     {/* Badges */}
                     <div className="absolute top-4 left-4 flex flex-col gap-2">
                       {restaurant.deliveryFee === "Gratis" && (
@@ -439,7 +437,6 @@ const RestaurantsPage = () => {
                         </div>
                       )}
                     </div>
-
                     {/* Zone Badge */}
                     <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-medium">
                       {restaurant.zona_nombre}
