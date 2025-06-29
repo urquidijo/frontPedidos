@@ -129,25 +129,23 @@ const Home = () => {
               <Link to="/Home" className="text-gray-700 hover:text-orange-500 font-semibold transition-colors">Inicio</Link>
               <Link to="/restaurantes" className="text-gray-700 hover:text-orange-500 font-semibold transition-colors">Comidas</Link>
               <Link to="/ofertas-comida" className="text-gray-700 hover:text-orange-500 font-semibold transition-colors">Productos</Link>
-              <Link to= "/carrito" className="text-gray-700 hover:text-orange-500 font-semibold transition-colors">Mis Pedidos</Link>
+              <Link to="/carrito" className="text-gray-700 hover:text-orange-500 font-semibold transition-colors">Mis Pedidos</Link>
             </nav>
             {/* User & Carrito */}
             <div className="flex items-center space-x-2">
               {/* Carrito */}
-              <div className="relative">
-                <button
-                  className="p-2 rounded-full hover:bg-orange-100 transition"
-                  title="Ver carrito"
-                  // onClick={} // Si quieres abrir modal o ir a página de carrito
-                >
-                  <ShoppingBag className="h-6 w-6 text-orange-500" />
-                  {cart.length > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
-                      {cart.length}
-                    </span>
-                  )}
-                </button>
-              </div>
+              <Link
+                to="/carrito"
+                className="relative text-gray-700 hover:text-orange-500 font-semibold transition-colors"
+                title="Ver carrito"
+              >
+                <ShoppingBag className="h-6 w-6 text-orange-500" />
+                {cart.length > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                    {cart.length}
+                  </span>
+                )}
+              </Link>
               <button className="group p-2 rounded-full hover:bg-orange-100 transition relative" title="Perfil">
                 <User className="h-6 w-6 text-orange-500 group-hover:scale-110 transition-transform" />
               </button>
@@ -168,9 +166,14 @@ const Home = () => {
           <div className="md:hidden bg-white border-t">
             <div className="px-4 py-2 space-y-2">
               <Link to="/Home" className="block py-2 text-gray-700 hover:text-orange-500 font-semibold">Inicio</Link>
-              <Link to="/restaurantes" className="block py-2 text-gray-700 hover:text-orange-500 font-semibold">comidas</Link>
+              <Link to="/restaurantes" className="block py-2 text-gray-700 hover:text-orange-500 font-semibold">Comidas</Link>
               <Link to="/ofertas-comida" className="block py-2 text-gray-700 hover:text-orange-500 font-semibold">Productos</Link>
-              <a href="#" className="block py-2 text-gray-700 hover:text-orange-500 font-semibold">Mis Pedidos</a>
+              <Link
+                to="/carrito"
+                className="block py-2 text-gray-700 hover:text-orange-500 font-semibold"
+              >
+                Mis Pedidos
+              </Link>
               <button
                 onClick={handleLogout}
                 className="w-full flex items-center gap-2 py-2 px-3 rounded-lg text-red-500 bg-red-50 hover:bg-red-100 transition font-semibold"
@@ -344,3 +347,4 @@ const Home = () => {
 };
 
 export default Home;
+

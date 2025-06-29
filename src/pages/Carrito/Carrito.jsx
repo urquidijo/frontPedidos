@@ -13,24 +13,32 @@ const Carrito = () => {
     return stored ? JSON.parse(stored) : [];
   });
   const [restaurants, setRestaurants] = useState([]);
+  const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Obtener los detalles de todos los restaurantes
+  // Carga ambos: restaurantes y productos
   useEffect(() => {
     setLoading(true);
-    fetch(`${API_URL}/restaurantes`)
-      .then((res) => res.ok ? res.json() : [])
-      .then((data) => setRestaurants(data || []))
-      .finally(() => setLoading(false));
+
+    Promise.all([
+      fetch(`${API_URL}/restaurantes`).then(res => res.ok ? res.json() : []),
+      fetch(`${API_URL}/productos`).then(res => res.ok ? res.json() : []),
+    ]).then(([restData, prodData]) => {
+      setRestaurants(restData || []);
+      setProductos(prodData || []);
+    }).finally(() => setLoading(false));
   }, []);
 
-  // Restaurantes agregados al carrito
-  const carritoRestaurantes = restaurants.filter(r => cart.includes(r.id));
+  // Mezcla los ítems del carrito
+  const carritoItems = cart.map(id =>
+    restaurants.find(r => r.id === id) ||
+    productos.find(p => p.id === id)
+  ).filter(Boolean); // Filtra nulos
 
-  // Quitar restaurante del carrito
+  // Quitar ítem del carrito
   const removeFromCart = (id) => {
-    const updatedCart = cart.filter(rid => rid !== id);
+    const updatedCart = cart.filter(itemId => itemId !== id);
     setCart(updatedCart);
     sessionStorage.setItem("cart", JSON.stringify(updatedCart));
   };
@@ -41,7 +49,7 @@ const Carrito = () => {
     sessionStorage.setItem("cart", "[]");
   };
 
-  // Finalizar pedido (solo ejemplo, puedes agregar lógica real)
+  // Finalizar pedido (sólo ejemplo)
   const handleCheckout = () => {
     alert("¡Gracias por tu pedido! (Aquí iría tu lógica de checkout)");
     clearCart();
@@ -63,7 +71,7 @@ const Carrito = () => {
       <main className="max-w-3xl mx-auto px-4 py-8">
         {loading ? (
           <div className="text-center py-16">Cargando carrito...</div>
-        ) : carritoRestaurantes.length === 0 ? (
+        ) : carritoItems.length === 0 ? (
           <div className="text-center py-20 text-gray-400">
             <ShoppingBag className="mx-auto h-16 w-16 mb-4 opacity-40" />
             <p className="text-xl font-bold">¡Tu carrito está vacío!</p>
@@ -76,23 +84,31 @@ const Carrito = () => {
           </div>
         ) : (
           <div className="space-y-6">
-            {carritoRestaurantes.map((rest) => (
-              <div key={rest.id} className="bg-white rounded-2xl shadow-md p-4 flex gap-4 items-center relative group border border-orange-100">
+            {carritoItems.map((item) => (
+              <div
+                key={item.id}
+                className="bg-white rounded-2xl shadow-md p-4 flex gap-4 items-center relative group border border-orange-100"
+              >
                 <img
                   src={
-                    rest.url && rest.url.trim() !== ""
-                      ? rest.url
-                      : "https://via.placeholder.com/90x90?text=Sin+Imagen"
+                    // Si es restaurante
+                    item.url && item.url.trim() !== ""
+                      ? item.url
+                      // Si es producto
+                      : item.imagen_url && item.imagen_url.trim() !== ""
+                        ? item.imagen_url
+                        : "https://via.placeholder.com/90x90?text=Sin+Imagen"
                   }
-                  alt={rest.nombre || rest.name}
+                  alt={item.nombre || item.name}
                   className="w-24 h-24 object-cover rounded-xl bg-gray-100"
                 />
                 <div className="flex-1">
-                  <h3 className="text-lg font-bold text-gray-900">{rest.nombre || rest.name}</h3>
-                  <p className="text-gray-500 text-sm mb-2">{rest.descripcion || rest.description}</p>
-                  {rest.url && (
+                  <h3 className="text-lg font-bold text-gray-900">{item.nombre || item.name}</h3>
+                  <p className="text-gray-500 text-sm mb-2">{item.descripcion || item.description}</p>
+                  {/* Si tiene url (restaurante) muestra link web */}
+                  {item.url && (
                     <a
-                      href={rest.url}
+                      href={item.url}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center text-blue-600 hover:underline text-xs font-bold"
@@ -102,7 +118,7 @@ const Carrito = () => {
                   )}
                 </div>
                 <button
-                  onClick={() => removeFromCart(rest.id)}
+                  onClick={() => removeFromCart(item.id)}
                   className="p-2 text-red-500 hover:text-white hover:bg-red-500 rounded-full transition absolute top-3 right-3"
                   title="Eliminar"
                 >
@@ -123,7 +139,7 @@ const Carrito = () => {
             <button
               onClick={handleCheckout}
               className="w-full bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold py-3 rounded-xl text-lg shadow-lg hover:scale-105 transition"
-              disabled={carritoRestaurantes.length === 0}
+              disabled={carritoItems.length === 0}
             >
               Finalizar pedido
             </button>
